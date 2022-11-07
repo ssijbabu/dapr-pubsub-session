@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Dapr.Client;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 using var client = new DaprClientBuilder().Build();
 
-int orders = 100;
+int orders = 10;
 int messagePerSession = 4;
 
 var taskList = new List<Task>();
@@ -38,9 +38,9 @@ for (int orderId = 0; orderId < orders; orderId++)
             await client.PublishEventAsync("orderpubsub", "orders", order, new Dictionary<string, string> { { "SessionId", orderNumber } });
             Console.WriteLine("Published data: " + order);
 
-            Random random = new Random();
-            int randNumb = random.Next(1, 10);
-            await Task.Delay(TimeSpan.FromSeconds(randNumb));
+            // Random random = new Random();
+            // int randNumb = random.Next(1, 10);
+            // await Task.Delay(TimeSpan.FromSeconds(randNumb));
         }        
     }));
 }
