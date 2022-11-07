@@ -3,10 +3,10 @@ kind: Component
 metadata:
   name: orderpubsub
 spec:
-  type: pubsub.redis
+  type: pubsub.azure.servicebus
   version: v1
   metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
+  - name: connectionString
+    value: --
+  - name: maxConcurrentHandlers
+    value: 2
