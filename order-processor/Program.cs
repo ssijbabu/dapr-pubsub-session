@@ -11,19 +11,17 @@ app.UseCloudEvents();
 // needed for Dapr pub/sub routing
 app.MapSubscribeHandler();
 
-if (app.Environment.IsDevelopment()) {app.UseDeveloperExceptionPage();}
+if (app.Environment.IsDevelopment()) { app.UseDeveloperExceptionPage(); }
 
 // Dapr subscription in [Topic] routes orders topic to this route
-app.MapPost("/orders-nosession", [Topic("orderpubsub", "orders")] (Order order) => {
+app.MapPost("/orders", [Topic("orderpubsub", "orders")]
+async (Order order) =>
+{
     Console.WriteLine("Subscriber received : " + order);
-    return Results.Ok(order);
-});
-
-app.MapPost("/orders-withsession", [Topic("orderpubsub", "orders")] (Order order) => {
-    Console.WriteLine("Subscriber received : " + order);
-    return Results.Ok(order);
+    await Task.Delay(TimeSpan.FromSeconds(2));
+    return Results.Ok();
 });
 
 await app.RunAsync();
 
-public record Order([property: JsonPropertyName("orderId")] int OrderId);
+public record Order([property: JsonPropertyName("orderId")] string OrderId, [property: JsonPropertyName("status")] string status);
